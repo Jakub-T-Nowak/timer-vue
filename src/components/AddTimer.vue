@@ -5,8 +5,9 @@
         <v-btn
         fab
         dark
+        small
         color="indigo"
-        style="margin-top: 10px; margin-left: 10px; margin-bottom: 10px;"
+        style="margin-top: 13px; margin-left: 20px; margin-bottom: 10px;"
         @click="clickBtn()"
       >
         <v-icon dark>
@@ -14,7 +15,7 @@
         </v-icon>
       </v-btn>
       </v-col>
-      <v-col cols="5">
+      <v-col cols="5" style="margin-bottom: 0px; padding-bottom: 0px; padding-top: 20px;">
         <v-datetime-picker
           label="Select Datetime" 
           v-model="datetime"
@@ -54,13 +55,27 @@ export default {
     clickBtn: function () {
       const date = moment(this.datetime);
       const now = moment();
-      const timeValidation = moment(date).isBefore(now);
+      //const timeValidation = moment(date).isBefore(now);
 
-      if (timeValidation) {
-
+      const delta = date.diff(now, 'days')
+      console.log(delta)
+      if (delta < 0) {
+        this.$notify({
+          type:"error",
+          title: "Error!",
+          text: "Date can't be past.",
+          duration: 3000,
+        })
+      } else if (delta > 365) {
+        this.$notify({
+          type:"error",
+          title: "Error!",
+          text: "Date can't be further than year.",
+          duration: 3000,
+        })
       }
       else {
-        
+        this.$emit('click', date)
       }
     }
   }
