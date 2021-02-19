@@ -1,5 +1,5 @@
 <template>
-  <v-card class="add-timer">
+  <v-card class="m-top-20" style="margin-top: 20px;">
     <v-row>
       <v-col cols="4">
         <v-btn
@@ -81,13 +81,3 @@ export default {
   }
 }
 </script>
-
-
-<style scoped>
-.add-timer {
-  width: 500px;
-  margin-left: auto;
-  margin-right: auto;
-  margin-top: 20px;
-}
-</style>
