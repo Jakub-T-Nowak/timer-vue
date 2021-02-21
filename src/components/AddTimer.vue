@@ -1,5 +1,5 @@
 <template>
-  <v-card class="m-top-20" style="margin-top: 20px;">
+  <v-card class="m-top-20">
     <v-row>
       <v-col cols="4">
         <v-btn
@@ -7,15 +7,15 @@
         dark
         small
         color="primary"
-        style="margin-top: 13px; margin-left: 20px; margin-bottom: 10px;"
-        @click="clickBtn()"
+        class="btn"
+        @click="clickBtnAddTimer()"
       >
         <v-icon dark>
           mdi-plus
         </v-icon>
       </v-btn>
       </v-col>
-      <v-col cols="5" style="margin-bottom: 0px; padding-bottom: 0px; padding-top: 20px;">
+      <v-col cols="5" class="col-w-data">
         <v-datetime-picker
           label="Select Datetime" 
           v-model="datetime"
@@ -52,41 +52,48 @@ export default {
   }},
 
   methods:{
-    clickBtn: function () {
+    notifyError: function (text) {
+      this.$notify({
+          type:"error",
+          title: "Error!",
+          text: text,
+          duration: 3000,
+        })
+    },
+    clickBtnAddTimer: function () {
       const date = moment(this.datetime);
       const now = moment();
 
       const deltaSeconds = date.diff(now, 'seconds')
       const deltaDays = date.diff(now, 'days')
-      const dateToSend = {date, deltaSeconds}
+      const dateToSend = {date: this.datetime, deltaSeconds}
 
       if (isNaN(date)){
-        this.$notify({
-          type:"error",
-          title: "Error!",
-          text: "Data input can't be empty.",
-          duration: 3000,
-        })
+        this.notifyError("Data input can't be empty.");
       }
       else if (deltaSeconds < 2) {
-        this.$notify({
-          type:"error",
-          title: "Error!",
-          text: "Date can't be past.",
-          duration: 3000,
-        })
-      } else if (deltaDays > 365) {
-        this.$notify({
-          type:"error",
-          title: "Error!",
-          text: "Date can't be further than year.",
-          duration: 3000,
-        })
+        this.notifyError("Date can't be a past date.");
+      } 
+      else if (deltaDays > 365) {
+        this.notifyError("Date can't be further than year.");
       }
       else {
-        this.$emit('click', dateToSend)
+        this.$emit('emitAddTimer', dateToSend)
       }
     }
   }
 }
 </script>
+
+<style scoped>
+  .btn {
+    margin-top: 13px;
+    margin-left: 20px;
+    margin-bottom: 10px;
+  }
+  .col-w-data{
+    margin-bottom: 0px;
+    padding-bottom: 0px;
+    padding-top: 20px;
+  }
+</style>

@@ -1,13 +1,13 @@
 <template>
   <v-app class="app">
-      <AddTimer @click="click_x"/>
+      <AddTimer @emitAddTimer="addNewTimer"/>
       <Timer
         v-for="(timer, index) in timers"
         :key="index"
         :timerIndex="index"
         :timer="timer"
         :now="now"
-        @deleteTimer="deleteTimer"
+        @emitDeleteTimer="deleteTimer"
       />
       <notifications position="bottom center"/>
   </v-app>
@@ -31,19 +31,28 @@ export default {
   }),
 
   created () {
-      setInterval(this.getActualTime, 1000);
+    this.getActualTime();
+    setInterval(this.getActualTime, 1000);
+
+    let loaclStorageTimers = localStorage.getItem('localTimers');
+    if (!loaclStorageTimers) {
+      localStorage.setItem('localTimers', '[]');
+    }
+    loaclStorageTimers = JSON.parse(localStorage.getItem('localTimers'));
+    this.timers = loaclStorageTimers
   },
 
   methods: {
-    click_x: function (date) {
-      this.timers.push(date)
-      this.now = moment();
+    addNewTimer: function (date) {
+      this.timers.push(date);
+      localStorage.setItem('localTimers', JSON.stringify(this.timers));
     },
     getActualTime: function () {
       this.now = moment();
     },
-    deleteTimer: function (key_x) {
-      this.timers.splice(key_x, 1)
+    deleteTimer: function (timerIndex) {
+      this.timers.splice(timerIndex, 1)
+      localStorage.setItem('localTimers', JSON.stringify(this.timers));
     }
   }
 };

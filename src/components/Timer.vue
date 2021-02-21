@@ -1,5 +1,5 @@
 <template>
-  <v-card class="m-top-20" style="height: 105px;">
+  <v-card class="m-top-20 height">
     <template v-if="seconds > 0">
       <v-row class="row">
 
@@ -14,7 +14,7 @@
           >
             {{value}}
           </v-chip>
-          <p style="margin-left: 20px; text-align: center;">
+          <p class="par">
             {{timeLabel[index]}}
           </p>
         </div>
@@ -24,7 +24,8 @@
         dark
         small
         color="error"
-        style="margin-top: 25px; margin-left: 60px;"
+        class="btn"
+        
         @click="deleteBtn"
       >
         <v-icon dark>
@@ -67,16 +68,16 @@ export default {
 
   data() {return {
     timeLabel: ["days", "hours", "min", "sec"],
-    timer_x: {}
+    countEndDate: ""
   }},
 
   created () {
-      this.timer_x = this.timer.date;
+      this.countEndDate = this.timer.date;
   },
 
   computed: {
     time: function () {
-      const date = this.timer_x;
+      const date = moment(this.countEndDate);
       const days = date.diff(this.now, 'days');
       let hoursAll = date.diff(this.now, 'hours');
       let minutesAll = date.diff(this.now, 'minutes');
@@ -88,18 +89,19 @@ export default {
       return [days, hours, minutes, seconds];
     },
     seconds: function () {
-      return this.timer_x.diff(this.now, 'seconds');
+      const timer = moment(this.countEndDate);
+      return timer.diff(this.now, 'seconds');
     },
   },
 
   methods:{
     deleteBtn: function () {
-      this.$emit("deleteTimer", this.timerIndex);
+      this.$emit("emitDeleteTimer", this.timerIndex);
     },
     resetBtn: function () {
       const dateNow = moment()
       const newEndOfCountingDate = dateNow.add(this.timer.deltaSeconds, 'seconds');
-      this.timer_x = newEndOfCountingDate;
+      this.countEndDate = newEndOfCountingDate;
     }
   }
 }
@@ -116,5 +118,16 @@ export default {
   }
   .row {
     margin: 0px;
+  }
+  .height {
+    height: 105px;
+  }
+  .btn {
+    margin-top: 25px;
+    margin-left: 60px;
+  }
+  .par {
+    margin-left: 20px;
+    text-align: center;
   }
 </style>
