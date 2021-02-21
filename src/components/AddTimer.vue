@@ -6,7 +6,7 @@
         fab
         dark
         small
-        color="indigo"
+        color="primary"
         style="margin-top: 13px; margin-left: 20px; margin-bottom: 10px;"
         @click="clickBtn()"
       >
@@ -55,18 +55,27 @@ export default {
     clickBtn: function () {
       const date = moment(this.datetime);
       const now = moment();
-      //const timeValidation = moment(date).isBefore(now);
 
-      const delta = date.diff(now, 'days')
-      console.log(delta)
-      if (delta < 0) {
+      const deltaSeconds = date.diff(now, 'seconds')
+      const deltaDays = date.diff(now, 'days')
+      const dateToSend = {date, deltaSeconds}
+
+      if (isNaN(date)){
+        this.$notify({
+          type:"error",
+          title: "Error!",
+          text: "Data input can't be empty.",
+          duration: 3000,
+        })
+      }
+      else if (deltaSeconds < 2) {
         this.$notify({
           type:"error",
           title: "Error!",
           text: "Date can't be past.",
           duration: 3000,
         })
-      } else if (delta > 365) {
+      } else if (deltaDays > 365) {
         this.$notify({
           type:"error",
           title: "Error!",
@@ -75,7 +84,7 @@ export default {
         })
       }
       else {
-        this.$emit('click', date)
+        this.$emit('click', dateToSend)
       }
     }
   }

@@ -4,7 +4,7 @@
       <Timer
         v-for="(timer, index) in timers"
         :key="index"
-        :key_x="index"
+        :timerIndex="index"
         :timer="timer"
         :now="now"
         @deleteTimer="deleteTimer"
@@ -51,7 +51,7 @@ export default {
 
 <style>
   .app{
-    width: 500px;
+    width: 400px;
     margin-left: auto;
     margin-right: auto;
   }
