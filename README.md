@@ -1,4 +1,4 @@
-# liczniki
+# Timer
 
 ## Project setup
 ```
