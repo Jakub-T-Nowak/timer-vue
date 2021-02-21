@@ -6,7 +6,7 @@
         fab
         dark
         small
-        color="primary"
+        :color="color"
         class="btn"
         @click="clickBtnAddTimer()"
       >
@@ -17,7 +17,7 @@
       </v-col>
       <v-col cols="5" class="col-w-data">
         <v-datetime-picker
-          label="Select Datetime" 
+          :label="language(text.label)" 
           v-model="datetime"
         >
           <template slot="dateIcon">
@@ -49,7 +49,23 @@ export default {
 
   data() {return {
     datetime: "",
+    text: {
+      label: ["Select Datetime", "Wybierz czas"]
+    }
   }},
+
+  computed: {
+    color: function () {
+      const colorNumber = this.$root.$data.color
+      if (colorNumber === 0){
+        return 'blue'
+      }
+      else if (colorNumber === 1){
+        return 'red';
+      }
+      return 'green'
+    }
+  },
 
   methods:{
     notifyError: function (text) {
@@ -80,7 +96,10 @@ export default {
       else {
         this.$emit('emitAddTimer', dateToSend)
       }
-    }
+    },
+    language: function (text) {
+      return text[this.$root.$data.language]
+    },
   }
 }
 </script>

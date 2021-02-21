@@ -10,6 +10,10 @@ Vue.use(Notifications)
 Vue.config.productionTip = false
 
 new Vue({
+  data: {
+    color: 0,
+    language: 0
+  },
   vuetify,
   render: h => h(App)
 }).$mount('#app')

@@ -1,5 +1,6 @@
 <template>
   <v-app class="app">
+      <NavOption/>
       <AddTimer @emitAddTimer="addNewTimer"/>
       <Timer
         v-for="(timer, index) in timers"
@@ -16,13 +17,14 @@
 
 <script>
 import moment from 'moment'
+import NavOption from './components/NavOption';
 import AddTimer from './components/AddTimer';
 import Timer from './components/Timer';
 export default {
   name: 'App',
 
   components: {
-    AddTimer, Timer
+    NavOption, AddTimer, Timer
   },
 
   data: () => ({
@@ -65,6 +67,9 @@ export default {
     margin-right: auto;
   }
   .m-top-20{
-    margin-top: 20px;
+    margin-top: 20px !important;
+  }
+  .m-top-10{
+    margin-top: 10px !important;
   }
 </style>

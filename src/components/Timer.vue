@@ -8,14 +8,14 @@
         >
         <div :key="index">
           <v-chip
-            color="rgb(173,216,230)" 
+            :color="color" 
             label
             class="chip"  
           >
             {{value}}
           </v-chip>
           <p class="par">
-            {{timeLabel[index]}}
+            {{language(timeLabel[index])}}
           </p>
         </div>
         </template>
@@ -24,7 +24,7 @@
         dark
         small
         color="error"
-        class="btn"
+        class="btn-del"
         
         @click="deleteBtn"
       >
@@ -37,19 +37,27 @@
     </template>
 
     <template v-else>
-      Counting ended.
-      <v-btn
-      small
-      @click="deleteBtn"
-      >
-      DELETE
-      </v-btn>
-      <v-btn
-      small
-      @click="resetBtn"
-      >
-      RESET
-      </v-btn>
+      <v-row justify="center" class="m-top-20">
+        {{language(text.info)}}
+      </v-row>
+      <v-row  justify="center" class="m-top-10">
+        <v-btn
+          small
+          class="btn"
+          @click="deleteBtn"
+          
+        >
+          {{language(text.delete)}}
+        </v-btn>
+        <v-btn
+          small
+          class="btn"
+          @click="resetBtn"
+        >
+          {{language(text.reset)}}
+        </v-btn>
+      </v-row>
+      
     </template>
   </v-card>
   
@@ -67,8 +75,18 @@ export default {
   },
 
   data() {return {
-    timeLabel: ["days", "hours", "min", "sec"],
-    countEndDate: ""
+    timeLabel: [
+      ['day', 'dni'], 
+      ['hours', 'godz'],
+      ['min', 'min'],
+      ['sec', 'sek']
+    ],
+    countEndDate: "",
+    text: {
+      info: ['Counting ended.', 'Odliczanie zakończone.'],
+      delete: ['DELETE', 'USUŃ'],
+      reset: ['RESET', 'WZNÓW']
+    }
   }},
 
   created () {
@@ -92,14 +110,27 @@ export default {
       const timer = moment(this.countEndDate);
       return timer.diff(this.now, 'seconds');
     },
+    color: function () {
+      const colorNumber = this.$root.$data.color
+      if (colorNumber === 0){
+        return 'rgb(173,216,230)'
+      }
+      else if (colorNumber === 1){
+        return 'rgb(255,204,200)';
+      }
+      return 'rgb(153,251,150)'
+    }
   },
 
   methods:{
     deleteBtn: function () {
       this.$emit("emitDeleteTimer", this.timerIndex);
     },
+    language: function (text) {
+      return text[this.$root.$data.language]
+    },
     resetBtn: function () {
-      const dateNow = moment()
+      const dateNow = moment();
       const newEndOfCountingDate = dateNow.add(this.timer.deltaSeconds, 'seconds');
       this.countEndDate = newEndOfCountingDate;
     }
@@ -122,12 +153,17 @@ export default {
   .height {
     height: 105px;
   }
-  .btn {
+  .btn-del {
     margin-top: 25px;
     margin-left: 60px;
   }
   .par {
     margin-left: 20px;
     text-align: center;
+  }
+  .btn {
+    width: 120px;
+    margin-left: 8px;
+    margin-right: 8px;
   }
 </style>
