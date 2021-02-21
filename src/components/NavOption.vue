@@ -73,7 +73,7 @@ export default {
     min-width: 10px !important;
   }
   .icon {
-    color: white;
+    color: white !important;
   }
   p {
     margin: 0px 10px 0px 0px !important;
