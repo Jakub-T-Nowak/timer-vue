@@ -81,7 +81,6 @@ export default {
       ['min', 'min'],
       ['sec', 'sek']
     ],
-    countEndDate: "",
     text: {
       info: ['Counting ended.', 'Odliczanie zakończone.'],
       delete: ['DELETE', 'USUŃ'],
@@ -90,10 +89,19 @@ export default {
   }},
 
   created () {
-      this.countEndDate = this.timer.date;
+      //this.countEndDate = this.timer.date;
   },
 
   computed: {
+    countEndDate: {
+      get: function () {
+        return this.timer.date
+      },
+      set: function (value) {
+        this.timer.date = value;
+      }
+    },
+
     time: function () {
       const date = moment(this.countEndDate);
       const days = date.diff(this.now, 'days');
@@ -133,6 +141,11 @@ export default {
       const dateNow = moment();
       const newEndOfCountingDate = dateNow.add(this.timer.deltaSeconds, 'seconds');
       this.countEndDate = newEndOfCountingDate;
+
+      const loaclStorageTimers = JSON.parse(localStorage.getItem('localTimers'));
+      let timers = loaclStorageTimers;
+      timers[this.timerIndex] = {date: newEndOfCountingDate, deltaSeconds: this.timer.deltaSeconds};
+      localStorage.setItem('localTimers', JSON.stringify(timers));
     }
   }
 }

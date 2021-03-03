@@ -1,21 +1,14 @@
 <template>
   <v-card class="m-top-20">
-    <v-row>
-      <v-col cols="4">
-        <v-btn
-        fab
-        dark
-        small
-        :color="color"
-        class="btn"
-        @click="clickBtnAddTimer()"
-      >
-        <v-icon dark>
-          mdi-plus
-        </v-icon>
-      </v-btn>
-      </v-col>
-      <v-col cols="5" class="col-w-data">
+    <v-row style="margin: 0px; margin-left: 10px; margin-right: 10px;">
+        <v-text-field
+          :label="language(text.name)"
+          v-model="timerName"
+        ></v-text-field>
+    </v-row>
+
+    <v-row style="margin: 0px; margin-left: 10px; margin-right: 10px;">
+      <v-col cols="6" style="padding: 0px;">
         <v-datetime-picker
           :label="language(text.label)" 
           v-model="datetime"
@@ -32,7 +25,20 @@
           </template>
         </v-datetime-picker>
       </v-col>
-      <v-spacer></v-spacer>
+      <v-col style="padding: 0px;">
+        <v-btn
+          fab
+          dark
+          small
+          :color="color"
+          class="btn"
+          @click="clickBtnAddTimer()"
+        >
+          <v-icon dark>
+            mdi-plus
+          </v-icon>
+        </v-btn>
+      </v-col>
     </v-row>
   </v-card>
 </template>
@@ -49,7 +55,9 @@ export default {
 
   data() {return {
     datetime: "",
+    timerName: "",
     text: {
+      name: ['Name', 'Nazwa'],
       label: ["Select Datetime", "Wybierz czas"]
     }
   }},
@@ -106,13 +114,17 @@ export default {
 
 <style scoped>
   .btn {
-    margin-top: 13px;
-    margin-left: 20px;
-    margin-bottom: 10px;
+    margin-top: 10px;
+    margin-left: 140px;
+    margin-bottom: 0px;
   }
   .col-w-data{
     margin-bottom: 0px;
     padding-bottom: 0px;
     padding-top: 20px;
+  }
+  .x {
+    margin: 0px;
+    margin-left: 30px;
   }
 </style>
